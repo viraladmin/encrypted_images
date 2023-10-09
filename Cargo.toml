@@ -1,0 +1,17 @@
+[package]
+name = "encrypted_images"
+version = "1.1.0"
+edition = "2021"
+description = "Encrypt Text to Images and decrypt text from images."
+authors = ["Bruce Bates | https://encryptedimages.com"]
+
+[dependencies]
+openssl = { version = "0.10.57", features = ["vendored"] }
+base64 = "0.21.4"
+image = { version = "0.23", features = ["png"] }
+native-dialog = "0.6.4"
+hmac = "0.12.1"
+sha2 = "0.10.7"
+hex-literal = "0.4.1"
+encoding = "0.2"
+subtle = "2.4"
