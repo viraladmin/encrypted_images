@@ -40,7 +40,7 @@ use encrypted_images::encryption::text::encrypts;
 let plaintext = "ThisIsPlainText";
 let key = Some("YourSecretKey"); 
 let encrypted_text = encrypts(plaintext, key);
-println!("Encrypted text: {}", encrypted_text);
+println!("Encrypted text: {}", encrypted_text.as_ref().unwrap());
 ```
 
 Encrypts a text string using AES-128 CBC encryption without a private key.
@@ -49,7 +49,7 @@ Encrypts a text string using AES-128 CBC encryption without a private key.
 use encrypted_images::encryption::text::encrypts;
 let plaintext = "ThisIsPlainText";
 let encrypted_text = encrypts(plaintext);
-println!("Encrypted text: {}", encrypted_text);
+println!("Encrypted text: {}", encrypted_text.as_ref().unwrap());
 ```
 
 ### `decrypts`
@@ -61,7 +61,7 @@ use encrypted_images::decryption::text::decrypts;
 
 let encrypted_text = "YourEncryptedText";
 let key = Some("YourSecretKey");
-if let Some(decrypted_text) = decrypts(encrypted_text, key) {
+if let Some(decrypted_text) = decrypts(encrypted_text.as_ref().unwrap(), key) {
     println!("Decrypted text: {}", decrypted_text);
 } else {
     println!("Decryption failed.");
@@ -132,7 +132,7 @@ fn main() {
 
     // Create an image from the encrypted text
     let watermark = "bitcoin"; // Optional watermark text
-    let image_data = create_img(&encrypted, watermark);
+    let image_data = create_img(encrypted.as_ref().unwrap(), watermark);
 
     match image_data {
         Some(encoded_image) => println!("Encoded Image:\n{}", encoded_image),
@@ -160,7 +160,7 @@ fn main() {
             let key = Some("your_secret_key"); //optional
 
             // Decrypt the extracted text
-            let decrypted_text = decrypts(&encrypted_text, key.clone());
+            let decrypted_text = decrypts(encrypted.as_ref().unwrap(), key.clone());
 
             match decrypted_text {
                 Some(text) => println!("Decrypted Text:\n{}", text),
@@ -170,3 +170,4 @@ fn main() {
         None => println!("Failed to decode the image and extract text."),
     }
 }
+```
