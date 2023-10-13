@@ -1,9 +1,9 @@
 [package]
 name = "encrypted_images"
-version = "1.1.0"
+version = "1.2.0"
 edition = "2021"
 description = "Encrypt Text to Images and decrypt text from images."
-authors = ["Bruce Bates | https://encryptedimages.com"]
+authors = ["Bruce Bates | https://encryptedimages.art"]
 
 [dependencies]
 openssl = { version = "0.10.57", features = ["vendored"] }
