@@ -2,7 +2,6 @@
   pub mod encryption;
   pub mod decryption;
 
-
   #[cfg(test)]
   mod tests {
     use crate::char_mappings::maps::mappings::{get_color, numbers_to_letter};
@@ -45,7 +44,7 @@
       // Encrypt the input
       let encrypted = encrypts(input, key.clone());
       // Decrypt the encrypted data
-      let decrypted = decrypts(&encrypted, key);
+      let decrypted = decrypts(encrypted.as_ref().unwrap(), key);
       // Assert that decryption matches the original input
       assert_eq!(decrypted, Some(input.to_string()));
     }
@@ -57,7 +56,7 @@
       // Encrypt the input without a key
       let encrypted = encrypts(input, None);
       // Decrypt the encrypted data without a key
-      let decrypted = decrypts(&encrypted, None);
+      let decrypted = decrypts(encrypted.as_ref().unwrap(), None);
       // Assert that decryption matches the original input
       assert_eq!(decrypted, Some(input.to_string()));
     }
@@ -66,14 +65,12 @@
     fn test_maximum_length() {
       // Your encryption key
       let key = Some("your_secret_key");
-  
-      // let mut length = 1844674406; // Start with an initial length
-      // let max_length = 1844674407; // Set the maximum length
-      let mut length = 10; // change when doing real tests but they take a long time
-      let max_length = 11; //change when doing real tests but they take a long time
+
+      let mut length = 1844674406; // Start with an initial length
+      let max_length = 1844674407; // Set the maximum length
       while length <= max_length {
         let encrypted = encrypts(&"A".repeat(length), key.clone());
-        let decrypted = decrypts(&encrypted, key.clone());
+        let decrypted = decrypts(encrypted.as_ref().unwrap(), key.clone());
 
         if decrypted.is_none() {
             println!("Maximum size: {} characters", length);
@@ -105,7 +102,7 @@
         // Encrypt the input
         let encrypted = encrypts(input, key.clone());
         // Decrypt the encrypted data
-        let decrypted = decrypts(&encrypted, key);
+        let decrypted = decrypts(encrypted.as_ref().unwrap(), key);
         // Assert that decryption matches the original input
         assert_eq!(decrypted, Some(input.to_string()));
     }
@@ -131,9 +128,9 @@
       // Encrypt the input
       let encrypted = encrypts(input, key.clone());
       // Print the encrypted string for testing
-      println!("Encrypted: {}", encrypted);
+      println!("Encrypted: {}", encrypted.as_ref().unwrap());
       // Decrypt the encrypted data
-      let decrypted = decrypts(&encrypted, key);
+      let decrypted = decrypts(encrypted.as_ref().unwrap(), key);
       // Assert that decryption matches the original input
       assert_eq!(decrypted, Some(input.to_string()));
     }
