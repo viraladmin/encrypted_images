@@ -28,6 +28,13 @@ The minimum and maximum allowed string sizes for encryption and decryption
 - cardano
 - none
 
+### Dependancies 
+
+```rust
+[dependencies]
+encrypted_images = "1.2.0"
+```
+
 ## Functions
 
 ### `encrypts`
