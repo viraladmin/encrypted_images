@@ -305,6 +305,8 @@ Decode an image and extracts original text from it.
 
 1: Encrypt and Create Image
 
+`cargo run --example encrypt_and_create_image`
+
 ```rust
   use encrypted_images::encryption::text::encrypts;
   use encrypted_images::encryption::images::create_img;
