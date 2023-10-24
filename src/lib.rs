@@ -2,6 +2,7 @@
   pub mod encryption;
   pub mod decryption;
 
+
   #[cfg(test)]
   mod tests {
     use crate::char_mappings::maps::mappings::{get_color, numbers_to_letter};
@@ -14,7 +15,7 @@
     #[test]
     fn test_char_conversion() {
       // Define valid characters for testing
-      let valid_characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/";
+      let valid_characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=";
       for character in valid_characters.chars() {
         // Get the color for the character
         let color_result = get_color(character);
@@ -42,7 +43,7 @@
       // Your encryption key (replace with the actual key you use)
       let key = Some("your_secret_key");
       // Encrypt the input
-      let encrypted = encrypts(input, key.clone());
+      let encrypted = encrypts(input, key.clone(), None);
       // Decrypt the encrypted data
       let decrypted = decrypts(encrypted.as_ref().unwrap(), key);
       // Assert that decryption matches the original input
@@ -54,7 +55,7 @@
       // Input data to encrypt
       let input = "ThisIsJustsTestString";
       // Encrypt the input without a key
-      let encrypted = encrypts(input, None);
+      let encrypted = encrypts(input, None, None);
       // Decrypt the encrypted data without a key
       let decrypted = decrypts(encrypted.as_ref().unwrap(), None);
       // Assert that decryption matches the original input
@@ -65,11 +66,11 @@
     fn test_maximum_length() {
       // Your encryption key
       let key = Some("your_secret_key");
-
+  
       let mut length = 1844674406; // Start with an initial length
       let max_length = 1844674407; // Set the maximum length
       while length <= max_length {
-        let encrypted = encrypts(&"A".repeat(length), key.clone());
+        let encrypted = encrypts(&"A".repeat(length), key.clone(), None);
         let decrypted = decrypts(encrypted.as_ref().unwrap(), key.clone());
 
         if decrypted.is_none() {
@@ -100,24 +101,34 @@
         // Your encryption key
         let key = Some("your_secret_key");
         // Encrypt the input
-        let encrypted = encrypts(input, key.clone());
+        let encrypted = encrypts(input, key.clone(), None);
         // Decrypt the encrypted data
         let decrypted = decrypts(encrypted.as_ref().unwrap(), key);
         // Assert that decryption matches the original input
         assert_eq!(decrypted, Some(input.to_string()));
     }
 
-    #[test]
-    fn test_create_img_and_decode() {
-      let ciphertext = "ThisIsJustaTestString";
-      let watermark = "Bitcoin"; // Text watermark
-      // Create the image
-      let encoded_image = create_img(ciphertext, watermark);
-      // Decode the image and extract text
-      let extracted_text = decode_image_and_extract_text(&encoded_image.unwrap());
-      // Check if extracted text matches the original ciphertext
-      assert_eq!(extracted_text, Some(ciphertext.to_string()));
-    }
+#[test]
+fn test_create_img_and_decode() {
+    let ciphertext = "ThisIsJustaTestString";
+    let watermark = "Bitcoin"; // Text watermark
+    let style = "h";
+
+    // Create the image
+    let encoded_image = create_img(ciphertext, style, watermark, None, None, None, None, None, None);
+
+    // Print out the encoded image for debugging
+    println!("Encoded Image: {:?}", encoded_image);
+
+    // Decode the image and extract text
+    let extracted_text = decode_image_and_extract_text(&encoded_image.unwrap());
+
+    // Print out the extracted text for debugging
+    println!("Extracted Text: {:?}", extracted_text);
+
+    // Check if extracted text matches the original ciphertext
+    assert_eq!(extracted_text, Some(ciphertext.to_string()));
+}
 
     #[test]
     fn test_encrypts_decrypts() {
@@ -126,7 +137,7 @@
       // Your encryption key (replace with the actual key you use)
       let key = Some("your_secret_key");
       // Encrypt the input
-      let encrypted = encrypts(input, key.clone());
+      let encrypted = encrypts(input, key.clone(), None);
       // Print the encrypted string for testing
       println!("Encrypted: {}", encrypted.as_ref().unwrap());
       // Decrypt the encrypted data

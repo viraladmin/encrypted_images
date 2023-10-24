@@ -40,38 +40,60 @@
   pub fn decode_image_and_extract_text(encoded_image: &str) -> Option<String> {
     let styles = ["h", "h2", "v", "v2"];
     for &style in &styles {
-        if let Some(test) = match style {
-            "h" => test_and_return(&encoded_image),
-            "h2" | "v" | "v2" => process_image(&encoded_image, style),
-            _ => None,
-        } {
-            return Some(test);
-        }
-    }
-    None
-  }
-
-  fn process_image(encoded_image: &str, style: &str) -> Option<String> {
-    let image_data = CUSTOM_ENGINE.decode(&encoded_image).ok()?;
-    let img = match image::load(std::io::Cursor::new(&image_data), image::ImageFormat::Png) {
-        Ok(img) => img,
-        Err(e) => return Some(format!("Error loading image: {}", e)),
-    };
-    let new_img = match style {
-        "h2" => imageops::flip_vertical(&img),
-        "v" => imageops::rotate270(&img),
-        "v2" => {
+        if style == "h" {
+            if let Some(test) = test_and_return(&encoded_image) { 
+                return Some(test)
+            }
+        } else if style == "h2" {
+            let image_data = CUSTOM_ENGINE.decode(&encoded_image).ok()?;
+            let img = match image::load(std::io::Cursor::new(&image_data), image::ImageFormat::Png) {
+                Ok(img) => img,
+                Err(e) => return Some(format!("Error loading image: {}", e)),
+            };
+            let new_img = imageops::flip_vertical(&img);
+            let mut buffer = Vec::new();
+            if let Err(e) = image::codecs::png::PngEncoder::new(&mut buffer).encode(&new_img, new_img.width(), new_img.height(), image::ColorType::Rgba8) {
+                return Some(format!("Error encoding image: {}", e));
+            }
+            let encoded_image = CUSTOM_ENGINE.encode(&buffer);
+            if let Some(test) = test_and_return(&encoded_image) {
+                return Some(test);
+            }
+        } else if style == "v" {
+            let image_data = CUSTOM_ENGINE.decode(&encoded_image).ok()?;
+            let img = match image::load(std::io::Cursor::new(&image_data), image::ImageFormat::Png) {
+                Ok(img) => img,
+                Err(e) => return Some(format!("Error loading image: {}", e)),
+            };
+            let new_img = imageops::rotate270(&img);
+            let mut buffer = Vec::new();
+            if let Err(e) = image::codecs::png::PngEncoder::new(&mut buffer).encode(&new_img, new_img.width(), new_img.height(), image::ColorType::Rgba8) {
+                return Some(format!("Error encoding image: {}", e));
+            }
+            let encoded_image = CUSTOM_ENGINE.encode(&buffer);
+            if let Some(test) = test_and_return(&encoded_image) {
+                return Some(test);
+            }
+        } else if style == "v2" {
+            let image_data = CUSTOM_ENGINE.decode(&encoded_image).ok()?;
+            let img = match image::load(std::io::Cursor::new(&image_data), image::ImageFormat::Png) {
+                Ok(img) => img,
+                Err(e) => return Some(format!("Error loading image: {}", e)),
+            };
             let rotated_img = imageops::rotate90(&img);
-            imageops::flip_vertical(&rotated_img)
+            let new_img = imageops::flip_vertical(&rotated_img);
+            let mut buffer = Vec::new();
+            if let Err(e) = image::codecs::png::PngEncoder::new(&mut buffer).encode(&new_img, new_img.width(), new_img.height(), image::ColorType::Rgba8) {
+                return Some(format!("Error encoding image: {}", e));
+            }
+            let encoded_image = CUSTOM_ENGINE.encode(&buffer);
+            if let Some(test) = test_and_return(&encoded_image) {
+                return Some(test);
+            }
         }
-        _ => return None,
-    };
-    let mut buffer = Vec::new();
-    if let Err(e) = image::codecs::png::PngEncoder::new(&mut buffer).encode(&new_img, new_img.width(), new_img.height(), image::ColorType::Rgba8) {
-        return Some(format!("Error encoding image: {}", e));
     }
-    let encoded_image = CUSTOM_ENGINE.encode(&buffer);
-    test_and_return(&encoded_image)
+    println!("Error Extracting Text");
+    return None;
   }
 
   fn test_and_return(encoded_image: &str) -> Option<String> {
