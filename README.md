@@ -5,6 +5,18 @@
 **X**: @thebrucebates
 **Website**: [https://encryptedimages.art](https://encryptedimages.art)
 
+---
+
+##Show Support
+
+I make nothing creating and sharing the tools I create. I do it for my love of the space and my love of the people in the space.
+
+Help a fellow dev out, I aint vibe codinghere. Whats a sat or two between friends. :)
+
+Bitcoin: bc1q035mesd2uyy6lg0va4cm4k7je323kf3f2c58r5
+
+---
+
 ## License
 
 Encrypted Images is distributed under the MIT Lice2nse. [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
